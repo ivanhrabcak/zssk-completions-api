@@ -1,7 +1,7 @@
 use std::{io::Cursor, env};
 
 use cors::CORS;
-use rocket::{serde::{Serialize}, get, launch, routes};
+use rocket::{serde::{Serialize}, get, launch, routes, Config};
 use rocket::{http::{ContentType, Status}, response::Responder};
 
 mod cors;
@@ -51,11 +51,12 @@ fn completions(query: String) -> Result<Response<Vec<String>>, String> {
 
 #[launch]
 fn rocket() -> _ {
-    let port: u16 = env::var("PORT").unwrap_or("8000".to_string()).parse().unwrap();
-    let figment = rocket::Config::figment()
-        .merge(("port", port));
+    let port: i32 = i32::from_str_radix(&env::var("PORT").unwrap_or("8081".to_string()), 10).unwrap();
+    let config = Config::figment().merge(("port", port)).merge(("address", "0.0.0.0"));
 
-    rocket::custom(figment)
-        .attach(CORS)
+    println!("Running on port: {}", port);
+
+    rocket::custom(config)
+            .attach(CORS)
         .mount("/", routes![status, completions])
 }
