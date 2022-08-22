@@ -51,8 +51,9 @@ fn completions(query: String) -> Result<Response<Vec<String>>, String> {
 
 #[launch]
 fn rocket() -> _ {
+    let port: u16 = env::var("PORT").unwrap_or("8000".to_string()).parse().unwrap();
     let figment = rocket::Config::figment()
-        .merge(("port", env::var("PORT").unwrap_or("8000".to_string())));
+        .merge(("port", port));
 
     rocket::custom(figment)
         .attach(CORS)
