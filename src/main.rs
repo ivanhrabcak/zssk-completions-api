@@ -57,6 +57,6 @@ fn rocket() -> _ {
     println!("Running on port: {}", port);
 
     rocket::custom(config)
-            .attach(CORS)
+        .attach(CORS)
         .mount("/", routes![status, completions])
 }
