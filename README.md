@@ -3,6 +3,7 @@ A small rest API for my project [zssk-group-ticket-gen](https://github.com/ivanh
 
 
 `GET /completions/<query>`
+
 **returns:**
 ```json
 {
@@ -12,6 +13,7 @@ A small rest API for my project [zssk-group-ticket-gen](https://github.com/ivanh
 
 
 `GET /status` (used to wake up the server on heroku)
+
 **returns:**
 ```
 Started!
