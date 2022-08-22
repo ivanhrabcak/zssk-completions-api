@@ -1,4 +1,4 @@
-use std::io::Cursor;
+use std::{io::Cursor, env};
 
 use cors::CORS;
 use rocket::{serde::{Serialize}, get, launch, routes};
@@ -51,7 +51,10 @@ fn completions(query: String) -> Result<Response<Vec<String>>, String> {
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build()
+    let figment = rocket::Config::figment()
+        .merge(("port", env::var("PORT").unwrap_or("8000".to_string())));
+
+    rocket::custom(figment)
         .attach(CORS)
         .mount("/", routes![status, completions])
 }
